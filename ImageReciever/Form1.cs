@@ -20,6 +20,7 @@ namespace ImageReciever
         public Form1()
         {
             InitializeComponent();
+            Task.Factory.StartNew(Test);
         }
 
         private void Button1_Click(object sender, EventArgs e)
@@ -34,6 +35,17 @@ namespace ImageReciever
             MemoryStream ms = new MemoryStream(byteArrayIn);
             Image returnImage = Image.FromStream(ms);
             return returnImage;
+        }
+
+        private void Test()
+        {
+            while (true)
+            {
+                byte[] imagebytearray = udp.Receive(ref ep);
+                Image picture = byteArrayToImage(imagebytearray);
+                pictureBox1.Image = picture;
+            }
+            
         }
     }
 }
